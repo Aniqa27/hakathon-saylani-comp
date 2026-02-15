@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Admin Login - Saylani Mass IT Hub</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Saylani Green Theme - No Blue */
+            --saylani-green: #66b032;
+            --green-dark: #4f8c27;
+            --green-light: #7bc043;
+            --green-pale: #e8f5e2;
+            
+            /* Neutrals */
+            --white: #ffffff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-800: #262626;
+            --gray-900: #171717;
+            
+            /* UI Elements */
+            --success: #10b981;
+            --success-bg: #d1fae5;
+            --error: #dc2626;
+            --error-bg: #fee2e2;
+            --info: #2563eb;
+            --info-bg: #dbeafe;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.1);
+            --shadow-green: 0 10px 25px -5px rgba(102, 176, 50, 0.3);
+            
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(145deg, var(--gray-50) 0%, #f0f0f0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            color: var(--gray-900);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .login-container {
+            background: var(--white);
+            border-radius: 32px;
+            box-shadow: var(--shadow-lg);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo/Saylani Badge */
+        .saylani-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--saylani-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .badge-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            letter-spacing: 0.5px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo span {
+            color: var(--saylani-green);
+        }
+
+        .subtitle {
+            color: var(--gray-500);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .admin-badge {
+            display: inline-block;
+            background: var(--green-pale);
+            color: var(--saylani-green);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 1rem;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            color: var(--gray-400);
+            font-size: 1.125rem;
+            pointer-events: none;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 2.75rem;
+            font-size: 1rem;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 14px;
+            background: var(--white);
+            color: var(--gray-900);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        input:hover {
+            border-color: var(--gray-300);
+        }
+
+        input:focus {
+            border-color: var(--saylani-green);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(102, 176, 50, 0.1);
+        }
+
+        input::placeholder {
+            color: var(--gray-400);
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--saylani-green);
+            color: var(--white);
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.75rem;
+        }
+
+        .btn i {
+            font-size: 1.125rem;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--green-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-green);
+        }
+
+        .btn:hover i {
+            transform: translateX(4px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            box-shadow: none;
+        }
+
+        .btn-secondary i {
+            color: var(--saylani-green);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary:hover i {
+            transform: none;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            background: var(--gray-50);
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            text-align: left;
+            border: 1px solid var(--gray-200);
+        }
+
+        .demo-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .demo-header i {
+            color: var(--saylani-green);
+            font-size: 1rem;
+        }
+
+        .demo-section h3 {
+            color: var(--gray-700);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .demo-credentials {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        .demo-credentials p {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+            color: var(--gray-600);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-credentials i {
+            color: var(--saylani-green);
+            font-size: 0.875rem;
+            width: 20px;
+        }
+
+        .demo-credentials strong {
+            color: var(--gray-900);
+            font-weight: 600;
+            min-width: 70px;
+        }
+
+        .demo-credentials span {
+            color: var(--gray-500);
+            font-family: monospace;
+            background: var(--gray-100);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        /* Message Styles */
+        .message {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message i {
+            font-size: 1.125rem;
+        }
+
+        .success {
+            background-color: var(--success-bg);
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .error {
+            background-color: var(--error-bg);
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .info {
+            background-color: var(--info-bg);
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--gray-500);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .back-link i {
+            font-size: 0.875rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--saylani-green);
+            background: var(--green-pale);
+        }
+
+        .back-link:hover i {
+            transform: translateX(-4px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            body {
+                padding: 0.75rem;
+                background: var(--white);
+            }
+
+            .login-container {
+                padding: 1.5rem;
+                border-radius: 24px;
+                box-shadow: var(--shadow-md);
+            }
+
+            .logo {
+                font-size: 1.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .input-wrapper {
+                margin-bottom: 0;
+            }
+
+            input {
+                padding: 0.875rem 1rem 0.875rem 2.5rem;
+                font-size: 0.95rem;
+            }
+
+            .btn {
+                padding: 0.875rem;
+                font-size: 0.95rem;
+            }
+
+            .demo-section {
+                padding: 1rem;
+            }
+
+            .demo-credentials p {
+                font-size: 0.875rem;
+            }
+
+            .message {
+                padding: 0.875rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Very small phones */
+        @media (max-width: 360px) {
+            .login-container {
+                padding: 1.25rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .demo-credentials p {
+                flex-wrap: wrap;
+            }
+
+            .demo-credentials strong {
+                min-width: auto;
+            }
+        }
+
+        /* Height-based adjustments */
+        @media (max-height: 700px) {
+            .login-container {
+                padding: 1.5rem;
+            }
+
+            .demo-section {
+                margin: 1rem 0;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .btn:hover,
+            .btn-secondary:hover,
+            .back-link:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            input:hover {
+                border-color: var(--gray-200);
+            }
+        }
+
+        /* Loading state */
+        .btn-loading {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .btn-loading .btn-text {
+            visibility: hidden;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid transparent;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: button-spin 0.6s linear infinite;
+        }
+
+        @keyframes button-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Accessibility */
+        :focus-visible {
+            outline: 2px solid var(--saylani-green);
+            outline-offset: 2px;
+        }
+
+        ::selection {
+            background: var(--saylani-green);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Saylani Badge -->
+        <div class="saylani-badge">
+            <div class="badge-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="badge-text">SAYLANI WELFARE</div>
+        </div>
+
+        <!-- Logo -->
+        <div class="logo">
+            Saylani Mass<span><br>IT Hub</span>
+        </div>
+        <div class="subtitle">Admin Panel Login</div>
+        
+        <!-- Admin Badge -->
+        <div class="admin-badge">
+            <i class="fas fa-shield-alt"></i> ADMIN ACCESS ONLY
+        </div>
+        
+        <!-- Login Form -->
+        <form id="adminLoginForm">
+            <div class="form-group">
+                <label for="adminEmail">
+                    <i class="fas fa-envelope" style="color: var(--saylani-green); margin-right: 0.25rem;"></i> Email
+                </label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="adminEmail" placeholder="Enter admin email or username" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="adminPassword">
+                    <i class="fas fa-lock" style="color: var(--saylani-green); margin-right: 0.25rem;"></i> Password
+                </label>
+                <div class="input-wrapper">
+                    <i class="fas fa-key input-icon"></i>
+                    <input type="password" id="adminPassword" placeholder="Enter your password" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn" id="loginBtn">
+                <span class="btn-text">Login as Admin.</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        
+        
+        <!-- Message Area -->
+        <div id="loginMessage" class="message" style="display: none;"></div>
+        
+       
+        
+        <!-- Back Link -->
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+    </div>
+
+    <script>
+        // Admin Login Script - Saylani Green Theme
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const loginMessage = document.getElementById('loginMessage');
+        const autoFillBtn = document.getElementById('autoFillBtn');
+        const loginBtn = document.getElementById('loginBtn');
+
+        // Pre-defined admin credentials
+        const ADMIN_CREDENTIALS = {
+            email: 'admin',
+            password: 'admin123'
+        };
+
+        // Auto-fill demo credentials
+        autoFillBtn.addEventListener('click', () => {
+            document.getElementById('adminEmail').value = ADMIN_CREDENTIALS.email;
+            document.getElementById('adminPassword').value = ADMIN_CREDENTIALS.password;
+            
+            // Show success message
+            showMessage('Demo credentials filled! Click login to continue.', 'info');
+        });
+
+        // Function to show messages
+        function showMessage(text, type) {
+            loginMessage.textContent = text;
+            loginMessage.className = `message ${type}`;
+            loginMessage.style.display = 'flex';
+            
+            // Add icon based on type
+            const icon = document.createElement('i');
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+            } else if (type === 'error') {
+                icon.className = 'fas fa-exclamation-circle';
+            } else if (type === 'info') {
+                icon.className = 'fas fa-info-circle';
+            }
+            
+            loginMessage.innerHTML = '';
+            loginMessage.appendChild(icon);
+            loginMessage.appendChild(document.createTextNode(text));
+        }
+
+        // Login form submission
+        adminLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
+
+            // Add loading state
+            loginBtn.classList.add('btn-loading');
+
+            // Simulate API call
+            setTimeout(() => {
+                if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+                    showMessage('Login successful! Redirecting to Admin Panel...', 'success');
+                    
+                    // Store admin session
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    localStorage.setItem('adminEmail', email);
+                    localStorage.setItem('adminLoginTime', new Date().toISOString());
+                    
+                    // Redirect to admin panel
+                    setTimeout(() => {
+                        window.location.href = 'admin-panel.html';
+                    }, 1500);
+                } else {
+                    showMessage('Invalid email or password! Use demo credentials: admin / admin123', 'error');
+                    loginBtn.classList.remove('btn-loading');
+                }
+            }, 800);
+        });
+
+        // Auto-fill on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Auto-fill demo credentials
+            document.getElementById('adminEmail').value = ADMIN_CREDENTIALS.email;
+            document.getElementById('adminPassword').value = ADMIN_CREDENTIALS.password;
+            
+            // Check if already logged in
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                // Optional: Add a small delay to show message before redirect
+                showMessage('You are already logged in! Redirecting...', 'info');
+                setTimeout(() => {
+                    window.location.href = 'admin-panel.html';
+                }, 1000);
+            }
+        });
+
+        // Toggle password visibility (optional feature)
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('adminPassword');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+        }
+
+        // Add keyboard support (Enter key on auto-fill button)
+        autoFillBtn.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                autoFillBtn.click();
+            }
+        });
+
+        // Clear any old session data on logout (optional)
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                // Page loaded from cache (like back button)
+                const emailInput = document.getElementById('adminEmail');
+                const passwordInput = document.getElementById('adminPassword');
+                if (emailInput) emailInput.value = ADMIN_CREDENTIALS.email;
+                if (passwordInput) passwordInput.value = ADMIN_CREDENTIALS.password;
+            }
+        });
+    </script>
+</body>
+</html>

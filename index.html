@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Sign Up</title>
+  <link rel="stylesheet" href="index.css">
+  <script type="module" src="config.js" defer></script>
+  <script type="module" src="index.js" defer></script>
+
+  <!-- ICONS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="auth-box">
+
+    <div class="left-section">
+      <h2 class="login-title">Login</h2>
+      <div class="types">
+     
+     <a href="adminlogin.html"> <button id="btn-type">Login as Admin</button></a>
+</div>
+      <form id="login-form">
+        
+        <div class="input-wrapper">
+          <input type="email" id="login-email" placeholder="Email" required>
+          <i class="fa-solid fa-user input-icon"></i>
+        </div>
+
+        <div class="input-wrapper">
+          <input type="password" id="login-password" placeholder="Password" required>
+          <i class="fa-solid fa-lock input-icon"></i>
+        </div>
+
+        <button type="submit" id="loginBtn" class="btn">Login</button>
+        
+      </form>
+
+      <p class="small-text">Don't have an account? 
+        <span id="showSignup" class="link">Sign Up</span>
+      </p>
+
+      <div id="message"></div>
+    </div>
+
+    <div class="right-section">
+      <h1>WELCOME TO <br>Saylani Mass IT Hub</h1>
+      <p> A multi-functional portal for campus students and staff where each feature serves a single purpose:</p>
+    </div>
+  </div>
+
+
+  <!-- SIGNUP POPUP -->
+  <div class="signup-popup" id="popup">
+    <div class="popup-box">
+      <h2>Sign Up</h2>
+      <form id="signup-form">
+        <input type="text" id="signup-name" placeholder="Your Name" required>
+        <input type="email" id="signup-email" placeholder="Email" required>
+        <input type="password" id="signup-password" placeholder="Password" required>
+
+        <button type="submit" class="btn">Sign Up</button>
+      </form>
+      <p class="close-popup" id="closePopup">Close</p>
+    </div>
+  </div>
+
+  <!-- Add this script back - it handles popup open/close -->
+  <script>
+    // Popup open/close functionality
+    document.getElementById("showSignup").onclick = () => {
+      document.getElementById("popup").style.display = "flex";
+    };
+
+    document.getElementById("closePopup").onclick = () => {
+      document.getElementById("popup").style.display = "none";
+    };
+
+    // Close popup when clicking outside
+    document.getElementById("popup").onclick = (e) => {
+      if (e.target.id === "popup") {
+        document.getElementById("popup").style.display = "none";
+      }
+    };
+  </script>
+
+</body>
+</html>
