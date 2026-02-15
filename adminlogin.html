@@ -577,7 +577,7 @@
                 </div>
             </div>
             
-            <button type="submit" class="btn" id="loginBtn">
+           <a href="admin dashboard.html"> <button type="submit" class="btn" id="loginBtn">
                 <span class="btn-text">Login as Admin.</span>
                 <i class="fas fa-arrow-right"></i>
             </button>
@@ -662,7 +662,7 @@
                     
                     // Redirect to admin panel
                     setTimeout(() => {
-                        window.location.href = 'admin-panel.html';
+                        window.location.href = 'admin dashboard.html';
                     }, 1500);
                 } else {
                     showMessage('Invalid email or password! Use demo credentials: admin / admin123', 'error');
@@ -682,7 +682,7 @@
                 // Optional: Add a small delay to show message before redirect
                 showMessage('You are already logged in! Redirecting...', 'info');
                 setTimeout(() => {
-                    window.location.href = 'admin-panel.html';
+                    window.location.href = 'admin dashboard.html';
                 }, 1000);
             }
         });

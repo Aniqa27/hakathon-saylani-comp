@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Saylani Campus</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Saylani Brand Colors */
+        :root {
+            --saylani-green: #66b032;
+            --saylani-blue: #0057a8;
+            --saylani-white: #ffffff;
+            
+            /* Status Colors */
+            --green: #66b032;
+            --blue: #0057a8;
+            --orange: #f59e0b;
+            --red: #ef4444;
+            --purple: #8b5cf6;
+            --gray-light: #f1f5f9;
+            --gray: #94a3b8;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --transition: all 0.2s ease;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            background: var(--saylani-green);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #1e293b;
+        }
+
+        .logo-text span {
+            color: var(--saylani-green);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--saylani-green);
+        }
+
+        .nav-link.active {
+            color: var(--saylani-green);
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--saylani-green);
+            border-radius: 2px;
+        }
+
+        .admin-badge {
+            background: var(--saylani-blue);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--saylani-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #userEmail {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            color: #ef4444;
+            background: #e2e8f0;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .welcome-section h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .welcome-section h1 span {
+            color: var(--saylani-green);
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+
+        .date-badge {
+            background: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            font-size: 1rem;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Left Column */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Right Column */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--saylani-green);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-header h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+        .stat-icon.blue { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .stat-icon.orange { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.2;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .stat-trend {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+
+        /* Admin Profile */
+        .admin-profile {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .admin-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--saylani-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        .admin-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .admin-role {
+            color: var(--saylani-green);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .admin-stat {
+            text-align: center;
+        }
+
+        .admin-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .admin-stat-label {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* Notifications Card */
+        .notifications-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-header h3 i {
+            color: var(--saylani-green);
+        }
+
+        .notification-badge {
+            background: #ef4444;
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .notification-item.unread {
+            background: #f0fdf4;
+            border-left-color: var(--saylani-green);
+        }
+
+        .notification-item:hover {
+            background: #f1f5f9;
+            transform: translateX(2px);
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--saylani-green);
+            border: 1px solid #e2e8f0;
+        }
+
+        .notification-icon.complaint {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .notification-icon.lost {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .notification-icon.volunteer {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .notification-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .notification-user {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .notification-user i {
+            color: var(--saylani-green);
+            font-size: 0.7rem;
+        }
+
+        .notification-time {
+            color: var(--saylani-green);
+            font-weight: 500;
+        }
+
+        .notification-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--saylani-green);
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .view-all-link {
+            text-align: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .view-all-link a {
+            color: var(--saylani-green);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .view-all-link a:hover {
+            color: #4f8a26;
+        }
+
+        /* Recent Activity Table */
+        .activity-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .activity-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .live-badge {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem 0.5rem;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            background: white;
+        }
+
+        td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-submitted { background: #fef3c7; color: #92400e; }
+        .status-inprogress { background: #dbeafe; color: #1e40af; }
+        .status-resolved { background: #d1fae5; color: #065f46; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-found { background: #d1fae5; color: #065f46; }
+        .status-active { background: #d1fae5; color: #065f46; }
+
+        .category-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* Last Reward Card */
+        .reward-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .reward-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .reward-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .reward-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--saylani-green);
+            margin-bottom: 1rem;
+        }
+
+        .reward-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+
+        .reward-progress {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--saylani-green);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .reward-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.75rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background: var(--saylani-green);
+            color: white;
+            border-color: var(--saylani-green);
+            transform: translateY(-2px);
+        }
+
+        .action-btn i {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="logo-text">Saylani <span>Admin</span></div>
+            </div>
+            
+            <div class="nav-links">
+                <a href="admin-dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="lost.html" class="nav-link">Lost & Found</a>
+                <a href="submit complain.html" class="nav-link">Complaints</a>
+                <a href="volunteer.html" class="nav-link">Volunteer</a>
+                <a href="notification.html" class="nav-link">Notifications</a>
+            </div>
+            
+            <div class="user-menu">
+                <div class="admin-badge">
+                    <i class="fas fa-shield-alt"></i> Admin
+                </div>
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span id="userEmail">Loading...</span>
+                <button class="logout-btn" id="logoutBtn" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1>Admin Dashboard <span id="adminName"></span></h1>
+            <div class="date-badge">
+                <i class="far fa-calendar-alt"></i>
+                <span id="currentDate"></span>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>Total Users</h3>
+                            <div class="stat-icon purple">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="totalUsers">0</div>
+                        <div class="stat-label">Registered users</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>Total Complaints</h3>
+                            <div class="stat-icon orange">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="totalComplaints">0</div>
+                        <div class="stat-label">All complaints</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>Open Complaints</h3>
+                            <div class="stat-icon orange">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="openComplaints">0</div>
+                        <div class="stat-label">Pending resolution</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>Active Volunteers</h3>
+                            <div class="stat-icon green">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="activeVolunteers">0</div>
+                        <div class="stat-label">Currently active</div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Table -->
+                <div class="activity-card">
+                    <div class="activity-header">
+                        <h3>Recent Complaints</h3>
+                        <span class="live-badge">LIVE</span>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="complaintsTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>User</th>
+                                    <th>Category</th>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complaintsTableBody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: #94a3b8;">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Admin Profile -->
+                <div class="admin-profile">
+                    <div class="admin-avatar-large" id="adminAvatar">A</div>
+                    <div class="admin-name" id="adminFullName">Admin User</div>
+                    <div class="admin-role">Administrator</div>
+                    <div class="admin-stats">
+                        <div class="admin-stat">
+                            <div class="admin-stat-value" id="adminReports">0</div>
+                            <div class="admin-stat-label">Reports</div>
+                        </div>
+                        <div class="admin-stat">
+                            <div class="admin-stat-value" id="adminEvents">0</div>
+                            <div class="admin-stat-label">Events</div>
+                        </div>
+                        <div class="admin-stat">
+                            <div class="admin-stat-value" id="adminDays">0</div>
+                            <div class="admin-stat-label">Days</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live User Complaint Notifications -->
+                <div class="notifications-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-bell"></i> User Complaint Alerts</h3>
+                        <span class="notification-badge" id="notificationCount">0</span>
+                    </div>
+                    
+                    <div class="notification-list" id="notificationList">
+                        <div style="text-align: center; color: #94a3b8; padding: 2rem;">
+                            <i class="fas fa-bell-slash"></i> No new complaints
+                        </div>
+                    </div>
+                    
+                    <div class="view-all-link">
+                        <a href="submit complain.html">View All Complaints <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- System Overview -->
+                <div class="reward-card">
+                    <div class="reward-header">
+                        <h3>System Overview</h3>
+                        <i class="fas fa-chart-line" style="color: var(--saylani-green);"></i>
+                    </div>
+                    
+                    <div class="reward-amount" id="totalItems">0</div>
+                    <div class="reward-label">Total Reports & Items</div>
+                    
+                    <div class="reward-progress">
+                        <div class="progress-bar" id="systemProgress" style="width: 65%;"></div>
+                    </div>
+                    
+                    <div class="reward-stats">
+                        <span>Resolved: <span id="resolvedCount">0</span></span>
+                        <span>Pending: <span id="pendingCount">0</span></span>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <a href="lost.html" class="action-btn">
+                            <i class="fas fa-search"></i>
+                            Lost & Found
+                        </a>
+                        <a href="submit complain.html" class="action-btn">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Complaints
+                        </a>
+                        <a href="volunteer.html" class="action-btn">
+                            <i class="fas fa-hands-helping"></i>
+                            Volunteers
+                        </a>
+                        <a href="notification.html" class="action-btn">
+                            <i class="fas fa-bell"></i>
+                            Notifications
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import supabase from config
+        import { supabase, checkUser } from './config.js';
+
+        // DOM Elements
+        const userEmailEl = document.getElementById('userEmail');
+        const userAvatarEl = document.getElementById('userAvatar');
+        const adminNameEl = document.getElementById('adminName');
+        const adminFullNameEl = document.getElementById('adminFullName');
+        const adminAvatarEl = document.getElementById('adminAvatar');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        let currentUser = null;
+
+        // Set current date
+        function setCurrentDate() {
+            const dateEl = document.getElementById('currentDate');
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateEl.textContent = new Date().toLocaleDateString('en-US', options);
+        }
+
+        // Check authentication
+        async function init() {
+            try {
+                const user = await checkUser();
+                
+                if (!user) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                currentUser = user;
+                const email = user.email;
+                
+                // Check if admin (you can modify this condition)
+                // For demo, we'll consider admin@gmail.com as admin
+                if (email !== 'admin@gmail.com') {
+                    alert('Access denied. Admin only.');
+                    window.location.href = 'lost.html';
+                    return;
+                }
+                
+                const firstName = email.split('@')[0];
+                const initial = firstName.charAt(0).toUpperCase();
+                
+                if (userEmailEl) userEmailEl.textContent = firstName;
+                if (adminNameEl) adminNameEl.textContent = `- ${firstName}`;
+                if (adminFullNameEl) adminFullNameEl.textContent = firstName;
+                if (adminAvatarEl) adminAvatarEl.textContent = initial;
+                if (userAvatarEl) {
+                    userAvatarEl.innerHTML = `<span>${initial}</span>`;
+                }
+                
+                setCurrentDate();
+                
+                // Load all dashboard data
+                await Promise.all([
+                    loadUserStats(),
+                    loadComplaints(),
+                    loadAdminNotifications(),
+                    loadSystemOverview()
+                ]);
+                
+                // Setup real-time listeners for complaints
+                setupRealtimeListeners();
+                
+            } catch (error) {
+                console.error('Init error:', error);
+            }
+        }
+
+        // Load user statistics
+        async function loadUserStats() {
+            try {
+                // Get total users from profiles
+                const { count: totalUsers, error: usersError } = await supabase
+                    .from('user_profiles')
+                    .select('*', { count: 'exact', head: true });
+                
+                if (!usersError) {
+                    document.getElementById('totalUsers').textContent = totalUsers || 0;
+                }
+                
+                // Get total complaints
+                const { count: totalComplaints, error: compError } = await supabase
+                    .from('complaints')
+                    .select('*', { count: 'exact', head: true });
+                
+                document.getElementById('totalComplaints').textContent = totalComplaints || 0;
+                
+                // Get open complaints
+                const { count: openComplaints, error: openError } = await supabase
+                    .from('complaints')
+                    .select('*', { count: 'exact', head: true })
+                    .in('status', ['Submitted', 'In Progress']);
+                
+                document.getElementById('openComplaints').textContent = openComplaints || 0;
+                
+                // Get active volunteers
+                const { count: activeVolunteers, error: volError } = await supabase
+                    .from('volunteers')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'Active');
+                
+                document.getElementById('activeVolunteers').textContent = activeVolunteers || 0;
+                
+                // Admin stats
+                document.getElementById('adminReports').textContent = totalComplaints || 0;
+                document.getElementById('adminEvents').textContent = activeVolunteers || 0;
+                document.getElementById('adminDays').textContent = Math.floor(Math.random() * 30) + 10;
+                
+            } catch (error) {
+                console.error('Error loading user stats:', error);
+            }
+        }
+
+        // Load complaints for table
+        async function loadComplaints() {
+            try {
+                const { data, error } = await supabase
+                    .from('complaints')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+                
+                if (error) throw error;
+                
+                const tableBody = document.getElementById('complaintsTableBody');
+                if (!tableBody) return;
+                
+                if (data && data.length > 0) {
+                    tableBody.innerHTML = data.map(complaint => {
+                        const userEmail = complaint.user_email || 'Unknown';
+                        const userName = userEmail.split('@')[0];
+                        const timeAgo = getTimeAgo(new Date(complaint.created_at));
+                        
+                        let statusClass = '';
+                        if (complaint.status === 'Submitted') statusClass = 'status-submitted';
+                        else if (complaint.status === 'In Progress') statusClass = 'status-inprogress';
+                        else if (complaint.status === 'Resolved') statusClass = 'status-resolved';
+                        else statusClass = 'status-pending';
+                        
+                        return `
+                            <tr>
+                                <td>${complaint.id}</td>
+                                <td>${userName}</td>
+                                <td><span class="category-badge">${complaint.category || 'General'}</span></td>
+                                <td>${complaint.title || 'No title'}</td>
+                                <td><span class="status-badge ${statusClass}">${complaint.status || 'Submitted'}</span></td>
+                                <td>${timeAgo}</td>
+                            </tr>
+                        `;
+                    }).join('');
+                } else {
+                    tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8;">No complaints found</td></tr>`;
+                }
+                
+            } catch (error) {
+                console.error('Error loading complaints:', error);
+            }
+        }
+
+        // Load admin notifications (complaints from users)
+        async function loadAdminNotifications() {
+            try {
+                // Get recent complaints from all users (not read by admin)
+                // For simplicity, we'll consider all complaints from last 24 hours as new
+                const oneDayAgo = new Date();
+                oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+                
+                const { data, error } = await supabase
+                    .from('complaints')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+                
+                if (error) throw error;
+                
+                const notificationList = document.getElementById('notificationList');
+                const notificationCount = document.getElementById('notificationCount');
+                
+                if (!notificationList) return;
+                
+                if (data && data.length > 0) {
+                    // Filter complaints from last hour for "new" indicator
+                    const oneHourAgo = new Date();
+                    oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+                    
+                    const newComplaints = data.filter(c => new Date(c.created_at) > oneHourAgo);
+                    
+                    if (notificationCount) {
+                        notificationCount.textContent = newComplaints.length;
+                    }
+                    
+                    notificationList.innerHTML = data.slice(0, 5).map(complaint => {
+                        const userEmail = complaint.user_email || 'Unknown';
+                        const userName = userEmail.split('@')[0];
+                        const timeAgo = getTimeAgo(new Date(complaint.created_at));
+                        const isNew = new Date(complaint.created_at) > oneHourAgo;
+                        
+                        // Determine icon based on category
+                        let icon = 'fa-exclamation-triangle';
+                        let iconClass = 'complaint';
+                        
+                        if (complaint.category?.toLowerCase().includes('internet')) {
+                            icon = 'fa-wifi';
+                        } else if (complaint.category?.toLowerCase().includes('electricity')) {
+                            icon = 'fa-bolt';
+                        } else if (complaint.category?.toLowerCase().includes('water')) {
+                            icon = 'fa-water';
+                        } else if (complaint.category?.toLowerCase().includes('maintenance')) {
+                            icon = 'fa-tools';
+                        }
+                        
+                        return `
+                            <div class="notification-item ${isNew ? 'unread' : ''}" data-id="${complaint.id}">
+                                <div class="notification-icon ${iconClass}">
+                                    <i class="fas ${icon}"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">New Complaint: ${complaint.title || 'Issue Reported'}</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-user">
+                                            <i class="fas fa-user"></i> ${userName}
+                                        </span>
+                                        <span class="notification-time">${timeAgo}</span>
+                                    </div>
+                                    <div style="font-size: 0.7rem; color: #64748b; margin-top: 0.25rem;">
+                                        ${complaint.location || 'Location not specified'} • ${complaint.category || 'General'}
+                                    </div>
+                                </div>
+                                ${isNew ? '<div class="notification-dot"></div>' : ''}
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    // Add click handlers to mark as "viewed" (you can update a field in DB if needed)
+                    document.querySelectorAll('.notification-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            // Optional: Mark as viewed in database
+                            // For now, just remove the unread class
+                            item.classList.remove('unread');
+                            const dot = item.querySelector('.notification-dot');
+                            if (dot) dot.remove();
+                            
+                            // Update count
+                            const unreadItems = document.querySelectorAll('.notification-item.unread').length;
+                            if (notificationCount) {
+                                notificationCount.textContent = unreadItems;
+                                if (unreadItems === 0) {
+                                    notificationCount.style.animation = 'none';
+                                }
+                            }
+                        });
+                    });
+                    
+                } else {
+                    notificationList.innerHTML = `
+                        <div style="text-align: center; color: #94a3b8; padding: 2rem;">
+                            <i class="fas fa-bell-slash"></i> No complaints yet
+                        </div>
+                    `;
+                    if (notificationCount) notificationCount.textContent = '0';
+                }
+                
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+            }
+        }
+
+        // Load system overview
+        async function loadSystemOverview() {
+            try {
+                // Get total items
+                const { count: complaints } = await supabase
+                    .from('complaints')
+                    .select('*', { count: 'exact', head: true });
+                
+                const { count: lostItems } = await supabase
+                    .from('lost_found_items')
+                    .select('*', { count: 'exact', head: true });
+                
+                const { count: volunteers } = await supabase
+                    .from('volunteers')
+                    .select('*', { count: 'exact', head: true });
+                
+                const total = (complaints || 0) + (lostItems || 0) + (volunteers || 0);
+                document.getElementById('totalItems').textContent = total;
+                
+                // Get resolved counts
+                const { count: resolvedComplaints } = await supabase
+                    .from('complaints')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'Resolved');
+                
+                const { count: foundItems } = await supabase
+                    .from('lost_found_items')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'Found');
+                
+                const resolved = (resolvedComplaints || 0) + (foundItems || 0);
+                const pending = total - resolved;
+                
+                document.getElementById('resolvedCount').textContent = resolved;
+                document.getElementById('pendingCount').textContent = pending;
+                
+                // Update progress bar
+                const progress = total > 0 ? (resolved / total) * 100 : 0;
+                document.getElementById('systemProgress').style.width = `${progress}%`;
+                
+            } catch (error) {
+                console.error('Error loading system overview:', error);
+            }
+        }
+
+        // Get time ago string
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} min ago`;
+            if (diffHours < 24) return `${diffHours} hour ago`;
+            if (diffDays < 7) return `${diffDays} day ago`;
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        // Setup real-time listeners for new complaints
+        function setupRealtimeListeners() {
+            // Listen for new complaints
+            supabase
+                .channel('admin-complaints-live')
+                .on('postgres_changes', 
+                    { event: 'INSERT', schema: 'public', table: 'complaints' }, 
+                    async (payload) => {
+                        console.log('New complaint received:', payload);
+                        
+                        // Show browser notification if supported
+                        if (Notification.permission === 'granted') {
+                            new Notification('New Complaint Alert!', {
+                                body: `${payload.new.title || 'New complaint'} from ${payload.new.user_email || 'a user'}`,
+                                icon: '/favicon.ico'
+                            });
+                        }
+                        
+                        // Refresh data
+                        await loadComplaints();
+                        await loadAdminNotifications();
+                        await loadUserStats();
+                        await loadSystemOverview();
+                        
+                        // Play sound (optional)
+                        // playNotificationSound();
+                    }
+                )
+                .on('postgres_changes', 
+                    { event: 'UPDATE', schema: 'public', table: 'complaints' }, 
+                    () => {
+                        loadComplaints();
+                        loadAdminNotifications();
+                        loadUserStats();
+                    }
+                )
+                .subscribe();
+            
+            // Request notification permission
+            if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+                Notification.requestPermission();
+            }
+        }
+
+        // Optional: Play sound
+        function playNotificationSound() {
+            const audio = new Audio('data:audio/wav;base64,UklGRlwAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVAAAAADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM=');
+            audio.play().catch(e => console.log('Audio play failed:', e));
+        }
+
+        // Logout
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                window.location.href = 'index.html';
+            });
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

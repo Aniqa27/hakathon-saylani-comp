@@ -5,3 +5,15 @@ const SUPABASE_URL = 'https://khnkxahjaznzczfswfkb.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_6_0v8xzUm68RdgOP6k6tQQ_CpxnzRzP';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Check if user is logged in
+export const checkUser = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.user || null;
+}
+
+// Get current user
+export const getCurrentUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user;
+}

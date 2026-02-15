@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Complaint | Saylani Campus</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Saylani Brand Colors */
+        :root {
+            --saylani-green: #66b032;
+            --saylani-blue: #0057a8;
+            --saylani-white: #ffffff;
+            
+            /* Neutrals */
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            /* UI */
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --transition: all 0.2s ease;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            background: var(--saylani-green);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--gray-900);
+        }
+
+        .logo-text span {
+            color: var(--saylani-green);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--saylani-green);
+        }
+
+        .nav-link.active {
+            color: var(--saylani-green);
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--saylani-green);
+            border-radius: 2px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--error);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.15rem 0.4rem;
+            border-radius: 50px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--gray-100);
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--saylani-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #userEmail {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            color: var(--error);
+            background: var(--gray-200);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--gray-500);
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .form-card h2 i {
+            color: var(--saylani-green);
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--saylani-green);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 176, 50, 0.1);
+        }
+
+        /* Priority Selector */
+        .priority-selector {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .priority-option {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .priority-option.low {
+            color: var(--success);
+        }
+        .priority-option.low.active {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .priority-option.medium {
+            color: var(--warning);
+        }
+        .priority-option.medium.active {
+            border-color: var(--warning);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .priority-option.high {
+            color: var(--error);
+        }
+        .priority-option.high.active {
+            border-color: var(--error);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .priority-option input {
+            display: none;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--saylani-green);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: #4f8a26;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Message */
+        #message {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .message-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .message-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        /* Success Card */
+        .success-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            display: none;
+        }
+
+        .success-card i {
+            font-size: 4rem;
+            color: var(--saylani-green);
+            margin-bottom: 1rem;
+        }
+
+        .success-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-card p {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .success-card .btn {
+            padding: 0.75rem 2rem;
+            background: var(--saylani-green);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .success-card .btn:hover {
+            background: #4f8a26;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .priority-selector {
+                flex-direction: column;
+            }
+            
+            .form-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="logo-text">Saylani <span>Complaints</span></div>
+            </div>
+            
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="lost.html" class="nav-link active">Lost & Found</a>
+                <a href="submit complain.html" class="nav-link">Complaints</a>
+                <a href="volunteer.html" class="nav-link">Volunteer</a>
+                <a href="notification.html" class="nav-link">
+                    Notifications
+                    <span class="notification-badge" id="navBadge">0</span>
+                </a>
+            </div>
+            
+            <div class="user-menu">
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span id="userEmail">Loading...</span>
+                <button class="logout-btn" id="logoutBtn" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Message -->
+        <div id="message"></div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Submit a Complaint</h1>
+            <p>Report issues like internet, electricity, water, maintenance, and more</p>
+        </div>
+
+        <!-- Complaint Form Card -->
+        <div class="form-card" id="complaintFormCard">
+            <h2>
+                <i class="fas fa-pen"></i>
+                Complaint Details
+            </h2>
+            
+            <form id="complaintForm">
+                <!-- Title -->
+                <div class="form-group">
+                    <label>Complaint Title</label>
+                    <input type="text" id="complaintTitle" placeholder="e.g., Wi-Fi not working, Leaky pipe..." required>
+                </div>
+                
+                <!-- Category -->
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="complaintCategory" required>
+                        <option value="">Select category</option>
+                        <option value="Internet">📶 Internet / Wi-Fi</option>
+                        <option value="Electricity">⚡ Electricity / Power</option>
+                        <option value="Water">💧 Water / Plumbing</option>
+                        <option value="Maintenance">🔧 Maintenance / Repair</option>
+                        <option value="Cleanliness">🧹 Cleanliness / Hygiene</option>
+                        <option value="Security">🛡️ Security / Safety</option>
+                        <option value="Academic">📚 Academic / Classes</option>
+                        <option value="Other">📌 Other</option>
+                    </select>
+                </div>
+                
+                <!-- Location -->
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="complaintLocation" placeholder="e.g., Library, Room 201, Cafeteria" required>
+                </div>
+                
+                <!-- Description -->
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="complaintDescription" rows="4" placeholder="Please provide detailed description of the issue..." required></textarea>
+                </div>
+                
+                <!-- Priority -->
+                <div class="form-group">
+                    <label>Priority Level</label>
+                    <div class="priority-selector">
+                        <label class="priority-option low active">
+                            <input type="radio" name="priority" value="Low" checked>
+                            <i class="fas fa-arrow-down"></i> Low
+                        </label>
+                        <label class="priority-option medium">
+                            <input type="radio" name="priority" value="Medium">
+                            <i class="fas fa-minus"></i> Medium
+                        </label>
+                        <label class="priority-option high">
+                            <input type="radio" name="priority" value="High">
+                            <i class="fas fa-arrow-up"></i> High
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Complaint
+                </button>
+            </form>
+        </div>
+
+        <!-- Success Card (shown after submission) -->
+        <div class="success-card" id="successCard">
+            <i class="fas fa-check-circle"></i>
+            <h3>Complaint Submitted!</h3>
+            <p>Your complaint has been successfully submitted. You can track its status in the notifications.</p>
+            <button class="btn" onclick="window.location.href='notification.html'">
+                View Status
+            </button>
+            <button class="btn" style="background: var(--gray-200); color: var(--gray-700); margin-top: 0.5rem;" onclick="resetForm()">
+                Submit Another
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import supabase from config
+        import { supabase, checkUser } from './config.js';
+
+        // DOM Elements
+        const messageEl = document.getElementById('message');
+        const userEmailEl = document.getElementById('userEmail');
+        const userAvatarEl = document.getElementById('userAvatar');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const form = document.getElementById('complaintForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const complaintFormCard = document.getElementById('complaintFormCard');
+        const successCard = document.getElementById('successCard');
+        
+        let currentUser = null;
+
+        // Show message
+        function showMessage(text, type) {
+            if (!messageEl) return;
+            messageEl.textContent = text;
+            messageEl.className = type === 'success' ? 'message-success' : 'message-error';
+            messageEl.style.display = 'block';
+            
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 3000);
+        }
+
+        // Reset form
+        window.resetForm = function() {
+            if (complaintFormCard) complaintFormCard.style.display = 'block';
+            if (successCard) successCard.style.display = 'none';
+            if (form) {
+                form.reset();
+                // Reset priority
+                document.querySelector('input[name="priority"][value="Low"]').checked = true;
+                document.querySelectorAll('.priority-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                document.querySelector('.priority-option.low').classList.add('active');
+            }
+        };
+
+        // Check authentication
+        async function init() {
+            try {
+                const user = await checkUser();
+                
+                if (!user) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                currentUser = user;
+                const email = user.email;
+                const firstName = email.split('@')[0];
+                const initial = firstName.charAt(0).toUpperCase();
+                
+                if (userEmailEl) userEmailEl.textContent = firstName;
+                if (userAvatarEl) {
+                    userAvatarEl.innerHTML = `<span style="color: white; font-weight: 600;">${initial}</span>`;
+                }
+                
+                // Load notification count
+                await loadNotificationCount();
+                
+            } catch (error) {
+                console.error('Init error:', error);
+            }
+        }
+
+        // Load notification count
+        async function loadNotificationCount() {
+            try {
+                const { count, error } = await supabase
+                    .from('notifications')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('user_email', currentUser.email)
+                    .eq('read', false);
+                
+                if (error) throw error;
+                
+                const badge = document.getElementById('navBadge');
+                if (badge) {
+                    badge.textContent = count || 0;
+                    badge.style.display = count > 0 ? 'block' : 'none';
+                }
+            } catch (error) {
+                console.error('Error loading notification count:', error);
+            }
+        }
+
+        // Handle form submission
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (!currentUser) {
+                    showMessage('Please login first', 'error');
+                    return;
+                }
+                
+                // Get form values
+                const title = document.getElementById('complaintTitle')?.value;
+                const category = document.getElementById('complaintCategory')?.value;
+                const location = document.getElementById('complaintLocation')?.value;
+                const description = document.getElementById('complaintDescription')?.value;
+                const priorityElement = document.querySelector('input[name="priority"]:checked');
+                const priority = priorityElement ? priorityElement.value : 'Low';
+                
+                // Validate
+                if (!title || !category || !location || !description) {
+                    showMessage('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                // Disable button
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = 'Submitting...';
+                }
+                
+                try {
+                    // Insert into database
+                    const { error } = await supabase
+                        .from('complaints')
+                        .insert([
+                            {
+                                title: title,
+                                category: category,
+                                location: location,
+                                description: description,
+                                priority: priority,
+                                status: 'Submitted',
+                                user_email: currentUser.email,
+                                user_id: currentUser.id
+                            }
+                        ]);
+                    
+                    if (error) throw error;
+                    
+                    // Create notification
+                    await supabase
+                        .from('notifications')
+                        .insert([{
+                            user_email: currentUser.email,
+                            type: 'status',
+                            title: 'Complaint Submitted',
+                            message: `Your complaint "${title.substring(0, 30)}..." has been submitted successfully.`,
+                            data: { status: 'Submitted' },
+                            read: false
+                        }]);
+                    
+                    // Show success
+                    if (complaintFormCard) complaintFormCard.style.display = 'none';
+                    if (successCard) successCard.style.display = 'block';
+                    
+                    // Update notification badge
+                    await loadNotificationCount();
+                    
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    showMessage('Error: ' + error.message, 'error');
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Complaint';
+                    }
+                }
+            });
+        }
+
+        // Priority selection styling
+        document.querySelectorAll('.priority-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.priority-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Logout
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                window.location.href = 'index.html';
+            });
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | Saylani Campus</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Saylani Brand Colors */
+        :root {
+            --saylani-green: #66b032;
+            --saylani-blue: #0057a8;
+            --saylani-white: #ffffff;
+            
+            /* Neutrals */
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            /* Notification Types */
+            --info: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --match: #8b5cf6;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --transition: all 0.2s ease;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            background: var(--saylani-green);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--gray-900);
+        }
+
+        .logo-text span {
+            color: var(--saylani-green);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--saylani-green);
+        }
+
+        .nav-link.active {
+            color: var(--saylani-green);
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--saylani-green);
+            border-radius: 2px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--error);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.15rem 0.4rem;
+            border-radius: 50px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--gray-100);
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--saylani-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #userEmail {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            color: var(--error);
+            background: var(--gray-200);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .header-content p {
+            color: var(--gray-500);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--saylani-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4f8a26;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-100);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.25rem;
+            border: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.info { background: rgba(59, 130, 246, 0.1); color: var(--info); }
+        .stat-icon.success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .stat-icon.warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .stat-icon.match { background: rgba(139, 92, 246, 0.1); color: var(--match); }
+
+        .stat-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            line-height: 1.2;
+        }
+
+        .stat-info p {
+            color: var(--gray-500);
+            font-size: 0.75rem;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            background: white;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-600);
+        }
+
+        .filter-tab:hover {
+            border-color: var(--saylani-green);
+            color: var(--saylani-green);
+        }
+
+        .filter-tab.active {
+            background: var(--saylani-green);
+            color: white;
+            border-color: var(--saylani-green);
+        }
+
+        /* Notifications List */
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .notification-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.25rem;
+            border: 1px solid var(--gray-200);
+            display: flex;
+            gap: 1rem;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--saylani-green);
+        }
+
+        .notification-card.unread {
+            background: #f0fdf4;
+            border-left: 4px solid var(--saylani-green);
+        }
+
+        .notification-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .notification-icon.info { background: rgba(59, 130, 246, 0.1); color: var(--info); }
+        .notification-icon.success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .notification-icon.warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .notification-icon.match { background: rgba(139, 92, 246, 0.1); color: var(--match); }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .notification-badge {
+            font-size: 0.6rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 50px;
+            background: var(--saylani-green);
+            color: white;
+        }
+
+        .notification-time {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        .notification-message {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .notification-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.7rem;
+            color: var(--gray-500);
+        }
+
+        .notification-meta i {
+            margin-right: 0.25rem;
+            color: var(--saylani-green);
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .action-btn {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            border: 1px solid var(--gray-200);
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background: var(--saylani-green);
+            color: white;
+            border-color: var(--saylani-green);
+        }
+
+        .action-btn.mark-read {
+            color: var(--info);
+            border-color: var(--info);
+        }
+
+        .action-btn.mark-read:hover {
+            background: var(--info);
+            color: white;
+        }
+
+        /* Match Card */
+        .match-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(102, 176, 50, 0.05));
+            border: 2px solid var(--match);
+        }
+
+        .match-badge {
+            background: var(--match);
+            color: white;
+            padding: 0.15rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .match-details {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .match-details p {
+            margin-bottom: 0.25rem;
+        }
+
+        .match-details strong {
+            color: var(--match);
+        }
+
+        /* No notifications */
+        .no-notifications {
+            text-align: center;
+            padding: 4rem;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .no-notifications i {
+            font-size: 3rem;
+            color: var(--gray-300);
+            margin-bottom: 1rem;
+        }
+
+        .no-notifications p {
+            color: var(--gray-500);
+            margin-bottom: 1rem;
+        }
+
+        /* Message */
+        #message {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .message-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .message-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .notification-card {
+                flex-direction: column;
+            }
+            
+            .notification-icon {
+                align-self: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="logo-text">Saylani <span>Notifications</span></div>
+            </div>
+            
+            <div class="nav-links">
+                <a href="lost-found.html" class="nav-link">Lost & Found</a>
+                <a href="complaints.html" class="nav-link">Complaints</a>
+                <a href="volunteer.html" class="nav-link">Volunteer</a>
+                <a href="notification.html" class="nav-link active">
+                    Notifications
+                    <span class="notification-badge" id="navBadge">0</span>
+                </a>
+                <a href="admin.html" class="nav-link">Admin</a>
+            </div>
+            
+            <div class="user-menu">
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span id="userEmail">Loading...</span>
+                <button class="logout-btn" id="logoutBtn" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Message -->
+        <div id="message"></div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-content">
+                <h1>Notifications Center</h1>
+                <p>Real-time updates for lost items, complaints, and matches</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i>
+                    Mark All Read
+                </button>
+                <button class="btn btn-primary" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon info">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalNotifications">0</h3>
+                    <p>Total</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon warning">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="unreadCount">0</h3>
+                    <p>Unread</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon match">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="matchCount">0</h3>
+                    <p>Item Matches</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon success">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="resolvedCount">0</h3>
+                    <p>Resolved</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <div class="filter-tab active" data-filter="all">All</div>
+            <div class="filter-tab" data-filter="unread">Unread</div>
+            <div class="filter-tab" data-filter="lostfound">Lost & Found</div>
+            <div class="filter-tab" data-filter="complaints">Complaints</div>
+            <div class="filter-tab" data-filter="matches">Item Matches</div>
+            <div class="filter-tab" data-filter="status">Status Updates</div>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="notifications-list" id="notificationsList">
+            <div class="no-notifications">
+                <i class="fas fa-bell-slash"></i>
+                <p>Loading notifications...</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import supabase from config
+        import { supabase, checkUser } from './config.js';
+
+        // DOM Elements
+        const messageEl = document.getElementById('message');
+        const userEmailEl = document.getElementById('userEmail');
+        const userAvatarEl = document.getElementById('userAvatar');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const notificationsList = document.getElementById('notificationsList');
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const markAllReadBtn = document.getElementById('markAllReadBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const navBadge = document.getElementById('navBadge');
+        
+        let currentUser = null;
+        let currentFilter = 'all';
+        let notifications = [];
+        let lostItems = [];
+        let complaints = [];
+
+        // Show message
+        function showMessage(text, type) {
+            if (!messageEl) return;
+            messageEl.textContent = text;
+            messageEl.className = type === 'success' ? 'message-success' : 'message-error';
+            messageEl.style.display = 'block';
+            
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 3000);
+        }
+
+        // Format time
+        function formatTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins}m ago`;
+            if (diffHours < 24) return `${diffHours}h ago`;
+            if (diffDays < 7) return `${diffDays}d ago`;
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        // Check authentication
+        async function init() {
+            try {
+                const user = await checkUser();
+                
+                if (!user) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                currentUser = user;
+                const email = user.email;
+                const firstName = email.split('@')[0];
+                const initial = firstName.charAt(0).toUpperCase();
+                
+                if (userEmailEl) userEmailEl.textContent = firstName;
+                if (userAvatarEl) {
+                    userAvatarEl.innerHTML = `<span style="color: white; font-weight: 600;">${initial}</span>`;
+                }
+                
+                // Load initial data
+                await Promise.all([
+                    loadLostItems(),
+                    loadComplaints(),
+                    loadNotifications()
+                ]);
+                
+                // Setup real-time listeners
+                setupRealtimeListeners();
+                
+            } catch (error) {
+                console.error('Init error:', error);
+            }
+        }
+
+        // Load lost items
+        async function loadLostItems() {
+            try {
+                const { data, error } = await supabase
+                    .from('lost_found_items')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                lostItems = data || [];
+                
+            } catch (error) {
+                console.error('Error loading lost items:', error);
+            }
+        }
+
+        // Load complaints
+        async function loadComplaints() {
+            try {
+                const { data, error } = await supabase
+                    .from('complaints')
+                    .select('*')
+                    .eq('user_email', currentUser.email)
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                complaints = data || [];
+                
+            } catch (error) {
+                console.error('Error loading complaints:', error);
+            }
+        }
+
+        // Load notifications
+        async function loadNotifications() {
+            try {
+                const { data, error } = await supabase
+                    .from('notifications')
+                    .select('*')
+                    .eq('user_email', currentUser.email)
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                notifications = data || [];
+                
+                // Generate matches if no notifications exist
+                if (notifications.length === 0) {
+                    await generateMatches();
+                } else {
+                    displayNotifications();
+                    updateStats();
+                }
+                
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+                generateFallbackNotifications();
+            }
+        }
+
+        // Generate item matches based on keywords
+        async function generateMatches() {
+            try {
+                // Get user's lost items
+                const userItems = lostItems.filter(item => item.user_email === currentUser.email);
+                
+                // Get all found items (from other users)
+                const foundItems = lostItems.filter(item => 
+                    item.user_email !== currentUser.email && 
+                    item.status === 'Found'
+                );
+                
+                const matches = [];
+                
+                // Keywords for matching
+                const keywords = ['laptop', 'phone', 'wallet', 'keys', 'bag', 'book', 'id card', 'bottle'];
+                
+                // Check for matches
+                for (const lost of userItems) {
+                    for (const found of foundItems) {
+                        // Simple keyword matching
+                        const lostWords = (lost.title + ' ' + (lost.description || '')).toLowerCase();
+                        const foundWords = (found.title + ' ' + (found.description || '')).toLowerCase();
+                        
+                        let matchFound = false;
+                        let matchedKeywords = [];
+                        
+                        for (const keyword of keywords) {
+                            if (lostWords.includes(keyword) && foundWords.includes(keyword)) {
+                                matchFound = true;
+                                matchedKeywords.push(keyword);
+                            }
+                        }
+                        
+                        if (matchFound) {
+                            matches.push({
+                                type: 'match',
+                                title: '🎯 Potential Item Match Found!',
+                                message: `Your lost "${lost.title}" might match with a found item: "${found.title}"`,
+                                data: { lost, found, keywords: matchedKeywords },
+                                created_at: new Date()
+                            });
+                        }
+                    }
+                }
+                
+                // Create notification for each match
+                for (const match of matches) {
+                    await createNotification({
+                        user_email: currentUser.email,
+                        type: 'match',
+                        title: match.title,
+                        message: match.message,
+                        data: match.data,
+                        read: false
+                    });
+                }
+                
+                // Also create notifications for status updates
+                await generateStatusUpdates();
+                
+                // Reload notifications
+                await loadNotifications();
+                
+            } catch (error) {
+                console.error('Error generating matches:', error);
+                generateFallbackNotifications();
+            }
+        }
+
+        // Generate status update notifications
+        async function generateStatusUpdates() {
+            try {
+                // Complaint status updates
+                for (const complaint of complaints) {
+                    await createNotification({
+                        user_email: currentUser.email,
+                        type: 'status',
+                        title: 'Complaint Status Updated',
+                        message: `Your complaint "${complaint.title.substring(0, 30)}..." is now ${complaint.status}`,
+                        data: { id: complaint.id, type: 'complaint', status: complaint.status },
+                        read: false
+                    });
+                }
+                
+                // Lost item status updates
+                const userItems = lostItems.filter(item => item.user_email === currentUser.email);
+                for (const item of userItems) {
+                    if (item.status === 'Found') {
+                        await createNotification({
+                            user_email: currentUser.email,
+                            type: 'success',
+                            title: '✅ Item Found!',
+                            message: `Good news! Your item "${item.title}" has been marked as found.`,
+                            data: { id: item.id, type: 'lostitem', status: item.status },
+                            read: false
+                        });
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Error generating status updates:', error);
+            }
+        }
+
+        // Create notification in database
+        async function createNotification(notification) {
+            try {
+                const { error } = await supabase
+                    .from('notifications')
+                    .insert([notification]);
+                
+                if (error) console.error('Error creating notification:', error);
+                
+            } catch (error) {
+                console.error('Error in createNotification:', error);
+            }
+        }
+
+        // Generate fallback notifications (for demo)
+        function generateFallbackNotifications() {
+            notifications = [
+                {
+                    id: 1,
+                    type: 'match',
+                    title: '🎯 Potential Item Match Found!',
+                    message: 'Your lost "Laptop" might match with a found item reported in Library',
+                    data: { keywords: ['laptop', 'electronics'] },
+                    created_at: new Date(Date.now() - 1000 * 60 * 30),
+                    read: false,
+                    user_email: currentUser?.email
+                },
+                {
+                    id: 2,
+                    type: 'status',
+                    title: 'Complaint Status Updated',
+                    message: 'Your complaint "Wi-Fi not working" is now In Progress',
+                    data: { status: 'In Progress' },
+                    created_at: new Date(Date.now() - 1000 * 60 * 60 * 2),
+                    read: false,
+                    user_email: currentUser?.email
+                },
+                {
+                    id: 3,
+                    type: 'success',
+                    title: '✅ Item Found!',
+                    message: 'Your lost item "Wallet" has been marked as found at Security Office',
+                    data: { location: 'Security Office' },
+                    created_at: new Date(Date.now() - 1000 * 60 * 60 * 5),
+                    read: true,
+                    user_email: currentUser?.email
+                },
+                {
+                    id: 4,
+                    type: 'info',
+                    title: 'Volunteer Reminder',
+                    message: 'Community Cleanup event is tomorrow at 9:00 AM',
+                    data: { event: 'Community Cleanup' },
+                    created_at: new Date(Date.now() - 1000 * 60 * 60 * 24),
+                    read: true,
+                    user_email: currentUser?.email
+                }
+            ];
+            
+            displayNotifications();
+            updateStats();
+        }
+
+        // Setup real-time listeners
+        function setupRealtimeListeners() {
+            // Listen for new lost items
+            supabase
+                .channel('lost-items-changes')
+                .on('postgres_changes', 
+                    { event: 'INSERT', schema: 'public', table: 'lost_found_items' }, 
+                    async (payload) => {
+                        const newItem = payload.new;
+                        
+                        // Check if this might match user's items
+                        if (newItem.user_email !== currentUser.email && newItem.status === 'Found') {
+                            await checkForMatches(newItem);
+                        }
+                        
+                        // Refresh lost items
+                        await loadLostItems();
+                    }
+                )
+                .subscribe();
+            
+            // Listen for complaint updates
+            supabase
+                .channel('complaint-changes')
+                .on('postgres_changes', 
+                    { event: 'UPDATE', schema: 'public', table: 'complaints' }, 
+                    async (payload) => {
+                        const updated = payload.new;
+                        
+                        // If this is user's complaint, create notification
+                        if (updated.user_email === currentUser.email) {
+                            await createNotification({
+                                user_email: currentUser.email,
+                                type: 'status',
+                                title: 'Complaint Status Updated',
+                                message: `Your complaint "${updated.title.substring(0, 30)}..." is now ${updated.status}`,
+                                data: { id: updated.id, type: 'complaint', status: updated.status },
+                                read: false
+                            });
+                            
+                            // Reload notifications
+                            await loadNotifications();
+                        }
+                    }
+                )
+                .subscribe();
+            
+            // Listen for lost item updates
+            supabase
+                .channel('lostitem-changes')
+                .on('postgres_changes', 
+                    { event: 'UPDATE', schema: 'public', table: 'lost_found_items' }, 
+                    async (payload) => {
+                        const updated = payload.new;
+                        
+                        // If this is user's item and status changed to Found
+                        if (updated.user_email === currentUser.email && updated.status === 'Found') {
+                            await createNotification({
+                                user_email: currentUser.email,
+                                type: 'success',
+                                title: '✅ Item Found!',
+                                message: `Good news! Your item "${updated.title}" has been marked as found.`,
+                                data: { id: updated.id, type: 'lostitem', status: updated.status },
+                                read: false
+                            });
+                            
+                            // Reload notifications
+                            await loadNotifications();
+                        }
+                    }
+                )
+                .subscribe();
+        }
+
+        // Check for matches when new item is added
+        async function checkForMatches(newItem) {
+            try {
+                // Get user's lost items
+                const userItems = lostItems.filter(item => 
+                    item.user_email === currentUser.email && 
+                    item.status === 'Pending'
+                );
+                
+                const keywords = ['laptop', 'phone', 'wallet', 'keys', 'bag', 'book', 'id card', 'bottle'];
+                
+                for (const lost of userItems) {
+                    const lostWords = (lost.title + ' ' + (lost.description || '')).toLowerCase();
+                    const foundWords = (newItem.title + ' ' + (newItem.description || '')).toLowerCase();
+                    
+                    let matchedKeywords = [];
+                    
+                    for (const keyword of keywords) {
+                        if (lostWords.includes(keyword) && foundWords.includes(keyword)) {
+                            matchedKeywords.push(keyword);
+                        }
+                    }
+                    
+                    if (matchedKeywords.length > 0) {
+                        await createNotification({
+                            user_email: currentUser.email,
+                            type: 'match',
+                            title: '🎯 New Potential Match Found!',
+                            message: `Your lost "${lost.title}" might match with a newly reported found item: "${newItem.title}"`,
+                            data: { lost, found: newItem, keywords: matchedKeywords },
+                            read: false
+                        });
+                        
+                        // Reload notifications
+                        await loadNotifications();
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Error checking matches:', error);
+            }
+        }
+
+        // Display notifications
+        function displayNotifications() {
+            if (!notificationsList) return;
+            
+            // Apply filter
+            let filtered = notifications;
+            
+            if (currentFilter === 'unread') {
+                filtered = filtered.filter(n => !n.read);
+            } else if (currentFilter === 'lostfound') {
+                filtered = filtered.filter(n => n.type === 'match' || n.data?.type === 'lostitem');
+            } else if (currentFilter === 'complaints') {
+                filtered = filtered.filter(n => n.data?.type === 'complaint' || n.title?.toLowerCase().includes('complaint'));
+            } else if (currentFilter === 'matches') {
+                filtered = filtered.filter(n => n.type === 'match');
+            } else if (currentFilter === 'status') {
+                filtered = filtered.filter(n => n.type === 'status' || n.type === 'success');
+            }
+            
+            if (filtered.length === 0) {
+                notificationsList.innerHTML = `
+                    <div class="no-notifications">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>No notifications found</p>
+                        <button class="btn btn-primary" id="refreshNotifications">
+                            <i class="fas fa-sync-alt"></i> Check for Matches
+                        </button>
+                    </div>
+                `;
+                
+                document.getElementById('refreshNotifications')?.addEventListener('click', () => {
+                    generateMatches();
+                });
+                
+                return;
+            }
+            
+            notificationsList.innerHTML = filtered.map(notif => {
+                const iconClass = notif.type === 'match' ? 'match' :
+                                 notif.type === 'success' ? 'success' :
+                                 notif.type === 'warning' ? 'warning' : 'info';
+                
+                const icon = notif.type === 'match' ? 'fa-handshake' :
+                            notif.type === 'success' ? 'fa-check-circle' :
+                            notif.type === 'warning' ? 'fa-exclamation-triangle' : 'fa-bell';
+                
+                const unreadClass = !notif.read ? 'unread' : '';
+                const matchClass = notif.type === 'match' ? 'match-card' : '';
+                
+                return `
+                    <div class="notification-card ${unreadClass} ${matchClass}" data-id="${notif.id}">
+                        <div class="notification-icon ${iconClass}">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-header">
+                                <div class="notification-title">
+                                    ${notif.title}
+                                    ${!notif.read ? '<span class="notification-badge">New</span>' : ''}
+                                    ${notif.type === 'match' ? '<span class="match-badge">Match</span>' : ''}
+                                </div>
+                                <span class="notification-time">${formatTime(notif.created_at)}</span>
+                            </div>
+                            <div class="notification-message">${notif.message}</div>
+                            
+                            ${notif.type === 'match' && notif.data?.keywords ? `
+                                <div class="match-details">
+                                    <p><strong>Matched Keywords:</strong> ${notif.data.keywords.join(', ')}</p>
+                                    ${notif.data.lost ? `<p><strong>Your Item:</strong> ${notif.data.lost.title} (${notif.data.lost.location})</p>` : ''}
+                                    ${notif.data.found ? `<p><strong>Found Item:</strong> ${notif.data.found.title} (${notif.data.found.location})</p>` : ''}
+                                </div>
+                            ` : ''}
+                            
+                            <div class="notification-meta">
+                                <span><i class="fas fa-tag"></i> ${notif.type || 'update'}</span>
+                                ${notif.data?.status ? `<span><i class="fas fa-clock"></i> Status: ${notif.data.status}</span>` : ''}
+                            </div>
+                            
+                            <div class="notification-actions">
+                                ${!notif.read ? `
+                                    <button class="action-btn mark-read" data-id="${notif.id}">
+                                        <i class="fas fa-check"></i> Mark as Read
+                                    </button>
+                                ` : ''}
+                                <button class="action-btn view-details" data-id="${notif.id}">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Add event listeners
+            document.querySelectorAll('.mark-read').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const id = btn.dataset.id;
+                    await markAsRead(id);
+                });
+            });
+            
+            document.querySelectorAll('.view-details').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = btn.dataset.id;
+                    const notif = filtered.find(n => n.id == id);
+                    showNotificationDetails(notif);
+                });
+            });
+            
+            document.querySelectorAll('.notification-card').forEach(card => {
+                card.addEventListener('click', async (e) => {
+                    if (!e.target.closest('.action-btn')) {
+                        const id = card.dataset.id;
+                        await markAsRead(id);
+                    }
+                });
+            });
+        }
+
+        // Mark notification as read
+        async function markAsRead(id) {
+            try {
+                // Update local
+                const notif = notifications.find(n => n.id == id);
+                if (notif) {
+                    notif.read = true;
+                }
+                
+                // Update database
+                const { error } = await supabase
+                    .from('notifications')
+                    .update({ read: true })
+                    .eq('id', id);
+                
+                if (error) console.error('Error marking as read:', error);
+                
+                displayNotifications();
+                updateStats();
+                
+            } catch (error) {
+                console.error('Error in markAsRead:', error);
+            }
+        }
+
+        // Show notification details
+        function showNotificationDetails(notif) {
+            alert(`Notification Details:
+            
+Title: ${notif.title}
+Message: ${notif.message}
+Type: ${notif.type}
+Time: ${new Date(notif.created_at).toLocaleString()}
+${notif.data ? 'Data: ' + JSON.stringify(notif.data, null, 2) : ''}`);
+        }
+
+        // Update stats
+        function updateStats() {
+            const total = notifications.length;
+            const unread = notifications.filter(n => !n.read).length;
+            const matches = notifications.filter(n => n.type === 'match').length;
+            const resolved = notifications.filter(n => n.type === 'success').length;
+            
+            document.getElementById('totalNotifications').textContent = total;
+            document.getElementById('unreadCount').textContent = unread;
+            document.getElementById('matchCount').textContent = matches;
+            document.getElementById('resolvedCount').textContent = resolved;
+            
+            if (navBadge) {
+                navBadge.textContent = unread > 9 ? '9+' : unread;
+                navBadge.style.display = unread > 0 ? 'block' : 'none';
+            }
+        }
+
+        // Mark all as read
+        async function markAllRead() {
+            try {
+                // Update local
+                notifications.forEach(n => n.read = true);
+                
+                // Update database
+                const { error } = await supabase
+                    .from('notifications')
+                    .update({ read: true })
+                    .eq('user_email', currentUser.email)
+                    .eq('read', false);
+                
+                if (error) console.error('Error marking all as read:', error);
+                
+                displayNotifications();
+                updateStats();
+                showMessage('All notifications marked as read', 'success');
+                
+            } catch (error) {
+                console.error('Error in markAllRead:', error);
+            }
+        }
+
+        // Filter tabs
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                displayNotifications();
+            });
+        });
+
+        // Mark all read button
+        if (markAllReadBtn) {
+            markAllReadBtn.addEventListener('click', markAllRead);
+        }
+
+        // Refresh button
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', async () => {
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+                await generateMatches();
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+            });
+        }
+
+        // Logout
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                window.location.href = 'index.html';
+            });
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer | Saylani Campus</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Saylani Brand Colors */
+        :root {
+            --saylani-green: #66b032;
+            --saylani-blue: #0057a8;
+            --saylani-white: #ffffff;
+            
+            /* Neutrals */
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            /* Event Colors */
+            --event-cleanup: #10b981;
+            --event-tech: #3b82f6;
+            --event-health: #ef4444;
+            --event-education: #8b5cf6;
+            --event-cultural: #f59e0b;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --transition: all 0.2s ease;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            background: var(--saylani-green);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--gray-900);
+        }
+
+        .logo-text span {
+            color: var(--saylani-green);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--saylani-green);
+        }
+
+        .nav-link.active {
+            color: var(--saylani-green);
+            font-weight: 600;
+            position: relative;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--saylani-green);
+            border-radius: 2px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--gray-100);
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--saylani-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #userEmail {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            color: var(--error);
+            background: var(--gray-200);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--gray-500);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--gray-200);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--saylani-green);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        /* Upcoming Events */
+        .events-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            color: var(--saylani-green);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .event-card.cleanup::before { background: var(--event-cleanup); }
+        .event-card.tech::before { background: var(--event-tech); }
+        .event-card.health::before { background: var(--event-health); }
+        .event-card.education::before { background: var(--event-education); }
+        .event-card.cultural::before { background: var(--event-cultural); }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .event-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-icon.cleanup { background: rgba(16, 185, 129, 0.1); color: var(--event-cleanup); }
+        .event-icon.tech { background: rgba(59, 130, 246, 0.1); color: var(--event-tech); }
+        .event-icon.health { background: rgba(239, 68, 68, 0.1); color: var(--event-health); }
+        .event-icon.education { background: rgba(139, 92, 246, 0.1); color: var(--event-education); }
+        .event-icon.cultural { background: rgba(245, 158, 11, 0.1); color: var(--event-cultural); }
+
+        .event-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-900);
+        }
+
+        .event-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-date i {
+            color: var(--saylani-green);
+            width: 16px;
+        }
+
+        .event-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-location i {
+            color: var(--saylani-green);
+            width: 16px;
+        }
+
+        .event-description {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-volunteers {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .volunteer-count {
+            font-weight: 600;
+            color: var(--saylani-green);
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--saylani-green);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-register:hover:not(:disabled) {
+            background: #4f8a26;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-register.registered {
+            background: var(--gray-300);
+            color: var(--gray-600);
+            cursor: not-allowed;
+        }
+
+        .btn-register:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Registration Form Card */
+        .registration-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-md);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .registration-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .registration-card h2 i {
+            color: var(--saylani-green);
+        }
+
+        .registration-card p {
+            color: var(--gray-500);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--saylani-green);
+            background: white;
+        }
+
+        /* Availability Tags */
+        .availability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .availability-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .availability-tag:hover {
+            border-color: var(--saylani-green);
+            background: rgba(102, 176, 50, 0.05);
+        }
+
+        .availability-tag input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .availability-tag.active {
+            border-color: var(--saylani-green);
+            background: rgba(102, 176, 50, 0.1);
+        }
+
+        .availability-tag span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        /* My Registrations */
+        .my-registrations {
+            margin-top: 2.5rem;
+        }
+
+        .registrations-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .registration-item {
+            background: white;
+            border-radius: 16px;
+            padding: 1rem;
+            border: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .registration-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--saylani-green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .registration-details {
+            flex: 1;
+        }
+
+        .registration-details h4 {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .registration-details p {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .registration-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        /* Message */
+        #message {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .message-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .message-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <div class="logo-text">Saylani <span>Volunteer</span></div>
+            </div>
+            
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link ">Dashboard</a>
+                <a href="lost.html" class="nav-link ">Lost & Found</a>
+                <a href="submit complain.html" class="nav-link ">Complaints</a>
+                <a href="volunteer.html" class="nav-link active">Volunteer</a>
+               <a href="notification.html" class="nav-link">
+    Notifications
+    <span class="notification-badge" id="navBadge">0</span>
+</a>
+            </div>
+            
+            <div class="user-menu">
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span id="userEmail">Loading...</span>
+                <button class="logout-btn" id="logoutBtn" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Message -->
+        <div id="message"></div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Volunteer Program</h1>
+            <p>Join our volunteer community and make a difference in campus events</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalVolunteers">0</div>
+                <div class="stat-label">Total Volunteers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="activeEvents">0</div>
+                <div class="stat-label">Active Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="hoursServed">0</div>
+                <div class="stat-label">Hours Served</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="myEvents">0</div>
+                <div class="stat-label">My Events</div>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="registration-card">
+            <h2>
+                <i class="fas fa-user-plus"></i>
+                Register as Volunteer
+            </h2>
+            <p>Fill in your details and select your availability</p>
+            
+            <form id="volunteerForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="volunteerName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="volunteerPhone" placeholder="03XX-XXXXXXX" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Select Event</label>
+                    <select id="volunteerEvent" required>
+                        <option value="">Choose an event</option>
+                        <option value="Community Cleanup">🧹 Community Cleanup - Sat, June 24</option>
+                        <option value="Tech Workshop">💻 Tech Workshop - Mon, June 5</option>
+                        <option value="Health Camp">🏥 Health Camp - Wed, July 5</option>
+                        <option value="Education Fair">📚 Education Fair - Fri, July 14</option>
+                        <option value="Cultural Day">🎭 Cultural Day - Sat, July 22</option>
+                        <option value="Sports Gala">⚽ Sports Gala - Mon, Aug 7</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Availability</label>
+                    <div class="availability-grid">
+                        <label class="availability-tag">
+                            <input type="checkbox" name="availability" value="Weekdays Morning">
+                            <span>🌅 Weekdays Morning</span>
+                        </label>
+                        <label class="availability-tag">
+                            <input type="checkbox" name="availability" value="Weekdays Afternoon">
+                            <span>☀️ Weekdays Afternoon</span>
+                        </label>
+                        <label class="availability-tag">
+                            <input type="checkbox" name="availability" value="Weekdays Evening">
+                            <span>🌆 Weekdays Evening</span>
+                        </label>
+                        <label class="availability-tag">
+                            <input type="checkbox" name="availability" value="Weekends">
+                            <span>🎉 Weekends</span>
+                        </label>
+                        <label class="availability-tag">
+                            <input type="checkbox" name="availability" value="Flexible">
+                            <span>🔄 Flexible</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Skills (Optional)</label>
+                    <textarea id="volunteerSkills" rows="2" placeholder="e.g., First aid, Teaching, Technical skills..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn-register" id="submitBtn">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    Register as Volunteer
+                </button>
+            </form>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="events-section">
+            <h2 class="section-title">
+                <i class="fas fa-calendar-alt"></i>
+                Upcoming Events
+            </h2>
+            
+            <div class="events-grid" id="eventsGrid">
+                <!-- Events will be loaded here -->
+            </div>
+        </div>
+
+        <!-- My Registrations -->
+        <div class="my-registrations">
+            <h2 class="section-title">
+                <i class="fas fa-clipboard-list"></i>
+                My Volunteer Registrations
+            </h2>
+            
+            <div class="registrations-list" id="registrationsList">
+                <!-- Registrations will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import supabase from config
+        import { supabase, checkUser } from './config.js';
+
+        // DOM Elements
+        const messageEl = document.getElementById('message');
+        const userEmailEl = document.getElementById('userEmail');
+        const userAvatarEl = document.getElementById('userAvatar');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const form = document.getElementById('volunteerForm');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        let currentUser = null;
+
+        // Show message
+        function showMessage(text, type) {
+            if (!messageEl) return;
+            messageEl.textContent = text;
+            messageEl.className = type === 'success' ? 'message-success' : 'message-error';
+            messageEl.style.display = 'block';
+            
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 3000);
+        }
+
+        // Check authentication
+        async function init() {
+            try {
+                const user = await checkUser();
+                
+                if (!user) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                currentUser = user;
+                const email = user.email;
+                const firstName = email.split('@')[0];
+                const initial = firstName.charAt(0).toUpperCase();
+                
+                if (userEmailEl) userEmailEl.textContent = firstName;
+                if (userAvatarEl) {
+                    userAvatarEl.innerHTML = `<span style="color: white; font-weight: 600;">${initial}</span>`;
+                }
+                
+                // Load data
+                await loadEvents();
+                await loadMyRegistrations();
+                await loadStats();
+                
+            } catch (error) {
+                console.error('Init error:', error);
+            }
+        }
+
+        // Load stats
+        async function loadStats() {
+            try {
+                // Get total volunteers
+                const { count: totalVolunteers } = await supabase
+                    .from('volunteers')
+                    .select('*', { count: 'exact', head: true });
+                
+                // Get active events (unique events)
+                const { data: events } = await supabase
+                    .from('volunteers')
+                    .select('event');
+                
+                const uniqueEvents = new Set(events?.map(e => e.event) || []);
+                
+                // Get my events count
+                const { count: myEvents } = await supabase
+                    .from('volunteers')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('user_email', currentUser.email);
+                
+                document.getElementById('totalVolunteers').textContent = totalVolunteers || 0;
+                document.getElementById('activeEvents').textContent = uniqueEvents.size || 0;
+                document.getElementById('hoursServed').textContent = '120';
+                document.getElementById('myEvents').textContent = myEvents || 0;
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load events
+        async function loadEvents() {
+            const eventsGrid = document.getElementById('eventsGrid');
+            if (!eventsGrid) return;
+            
+            const events = [
+                {
+                    id: 1,
+                    title: 'Community Cleanup',
+                    date: 'Saturday, 24th June 2026',
+                    time: '9:00 AM - 12:00 PM',
+                    location: 'City Park',
+                    description: 'Help us clean and beautify the city park. Gloves and equipment provided.',
+                    category: 'cleanup',
+                    icon: 'fa-broom',
+                    volunteers: 12,
+                    maxVolunteers: 20
+                },
+                {
+                    id: 2,
+                    title: 'Tech Workshop',
+                    date: 'Monday, 5th June 2026',
+                    time: '2:00 PM - 5:00 PM',
+                    location: 'CS Lab, Building B',
+                    description: 'Teach basic programming skills to beginners. Laptops provided.',
+                    category: 'tech',
+                    icon: 'fa-laptop-code',
+                    volunteers: 8,
+                    maxVolunteers: 15
+                },
+                {
+                    id: 3,
+                    title: 'Health Camp',
+                    date: 'Wednesday, 5th July 2026',
+                    time: '10:00 AM - 4:00 PM',
+                    location: 'Medical Center',
+                    description: 'Assist doctors and help with patient registration at free health camp.',
+                    category: 'health',
+                    icon: 'fa-heartbeat',
+                    volunteers: 15,
+                    maxVolunteers: 25
+                },
+                {
+                    id: 4,
+                    title: 'Education Fair',
+                    date: 'Friday, 14th July 2026',
+                    time: '11:00 AM - 6:00 PM',
+                    location: 'Main Auditorium',
+                    description: 'Help with student registration and guide visitors at education fair.',
+                    category: 'education',
+                    icon: 'fa-graduation-cap',
+                    volunteers: 10,
+                    maxVolunteers: 20
+                }
+            ];
+            
+            eventsGrid.innerHTML = events.map(event => `
+                <div class="event-card ${event.category}">
+                    <div class="event-icon ${event.category}">
+                        <i class="fas ${event.icon}"></i>
+                    </div>
+                    <h3 class="event-title">${event.title}</h3>
+                    <div class="event-date">
+                        <i class="far fa-calendar"></i>
+                        ${event.date} | ${event.time}
+                    </div>
+                    <div class="event-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        ${event.location}
+                    </div>
+                    <p class="event-description">${event.description}</p>
+                    <div class="event-volunteers">
+                        <span><i class="fas fa-users"></i> Volunteers: <span class="volunteer-count">${event.volunteers}/${event.maxVolunteers}</span></span>
+                    </div>
+                    <button class="btn-register quick-register" data-event="${event.title}">
+                        <i class="fas fa-hand-holding-heart"></i>
+                        Register for this Event
+                    </button>
+                </div>
+            `).join('');
+            
+            // Add quick register buttons
+            document.querySelectorAll('.quick-register').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const event = btn.dataset.event;
+                    document.getElementById('volunteerEvent').value = event;
+                    document.getElementById('volunteerForm').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        }
+
+        // Load my registrations
+        async function loadMyRegistrations() {
+            const registrationsList = document.getElementById('registrationsList');
+            if (!registrationsList) return;
+            
+            try {
+                const { data, error } = await supabase
+                    .from('volunteers')
+                    .select('*')
+                    .eq('user_email', currentUser.email)
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    registrationsList.innerHTML = data.map(reg => {
+                        const availability = reg.availability ? reg.availability.split(',') : [];
+                        return `
+                            <div class="registration-item">
+                                <div class="registration-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="registration-details">
+                                    <h4>${reg.event || 'Volunteer'}</h4>
+                                    <p>${reg.name} • ${availability[0] || 'Flexible'}</p>
+                                </div>
+                                <span class="registration-status">${reg.status || 'Active'}</span>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    registrationsList.innerHTML = `
+                        <div class="no-complaints" style="grid-column: 1/-1;">
+                            <i class="fas fa-calendar-times"></i>
+                            <p>You haven't registered for any events yet</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading registrations:', error);
+            }
+        }
+
+        // Handle form submission
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (!currentUser) {
+                    showMessage('Please login first', 'error');
+                    return;
+                }
+                
+                // Get form values
+                const name = document.getElementById('volunteerName')?.value;
+                const phone = document.getElementById('volunteerPhone')?.value;
+                const event = document.getElementById('volunteerEvent')?.value;
+                const skills = document.getElementById('volunteerSkills')?.value;
+                
+                // Get selected availability
+                const availabilityCheckboxes = document.querySelectorAll('input[name="availability"]:checked');
+                const availability = Array.from(availabilityCheckboxes).map(cb => cb.value).join(', ');
+                
+                // Validate
+                if (!name || !phone || !event || !availability) {
+                    showMessage('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                // Validate phone (simple)
+                if (!phone.match(/^03[0-9]{9}$/)) {
+                    showMessage('Please enter a valid Pakistani phone number (03XXXXXXXXX)', 'error');
+                    return;
+                }
+                
+                // Disable button
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = 'Registering...';
+                }
+                
+                try {
+                    // Check if already registered for this event
+                    const { data: existing } = await supabase
+                        .from('volunteers')
+                        .select('*')
+                        .eq('user_email', currentUser.email)
+                        .eq('event', event);
+                    
+                    if (existing && existing.length > 0) {
+                        showMessage('You are already registered for this event', 'error');
+                        return;
+                    }
+                    
+                    // Insert into database
+                    const { error } = await supabase
+                        .from('volunteers')
+                        .insert([{
+                            name: name,
+                            phone: phone,
+                            event: event,
+                            availability: availability,
+                            skills: skills,
+                            status: 'Active',
+                            user_email: currentUser.email,
+                            user_id: currentUser.id
+                        }]);
+                    
+                    if (error) throw error;
+                    
+                    showMessage('Successfully registered as volunteer!', 'success');
+                    form.reset();
+                    
+                    // Reload data
+                    await loadMyRegistrations();
+                    await loadStats();
+                    
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    showMessage('Error: ' + error.message, 'error');
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-hand-holding-heart"></i> Register as Volunteer';
+                    }
+                }
+            });
+        }
+
+        // Availability tag styling
+        document.querySelectorAll('.availability-tag').forEach(tag => {
+            tag.addEventListener('click', function(e) {
+                if (e.target.type !== 'checkbox') {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                }
+                
+                if (this.querySelector('input[type="checkbox"]').checked) {
+                    this.classList.add('active');
+                } else {
+                    this.classList.remove('active');
+                }
+            });
+            
+            // Initialize active state
+            const checkbox = tag.querySelector('input[type="checkbox"]');
+            if (checkbox.checked) {
+                tag.classList.add('active');
+            }
+        });
+
+        // Logout
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                window.location.href = 'index.html';
+            });
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

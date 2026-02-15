@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Saylani Campus</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Saylani Brand Colors */
+        :root {
+            --saylani-green: #66b032;
+            --saylani-blue: #0057a8;
+            --saylani-white: #ffffff;
+            
+            /* Status Colors */
+            --pending: #f59e0b;
+            --in-progress: #3b82f6;
+            --resolved: #10b981;
+            --rejected: #ef4444;
+            --completed: #8b5cf6;
+            
+            /* Neutrals */
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --transition: all 0.2s ease;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            background: var(--saylani-green);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--gray-900);
+        }
+
+        .logo-text span {
+            color: var(--saylani-green);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--saylani-green);
+        }
+
+        .nav-link.active {
+            color: var(--saylani-green);
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--saylani-green);
+            border-radius: 2px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 50px;
+            min-width: 22px;
+            text-align: center;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--gray-100);
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--saylani-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #userEmail {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            color: #ef4444;
+            background: var(--gray-200);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-section p {
+            color: var(--gray-500);
+            font-size: 1.2rem;
+        }
+
+        .date-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--gray-100);
+            border-radius: 50px;
+            font-size: 1rem;
+            color: var(--gray-600);
+            margin-top: 0.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.8rem;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--saylani-green);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .stat-icon.blue { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .stat-icon.orange { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+        .stat-value {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            color: var(--gray-500);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+
+        /* Activity Grid */
+        .activity-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Recent Activity */
+        .recent-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.8rem;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-header h3 i {
+            color: var(--saylani-green);
+            font-size: 1.6rem;
+        }
+
+        .view-all {
+            color: var(--saylani-green);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .view-all:hover {
+            color: #4f8a26;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.2rem;
+            border-radius: 12px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .activity-item:hover {
+            background: var(--gray-50);
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .activity-icon.lost { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .activity-icon.complaint { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .activity-icon.volunteer { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .activity-icon.notification { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--gray-800);
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-meta {
+            display: flex;
+            gap: 1.2rem;
+            font-size: 0.95rem;
+            color: var(--gray-500);
+        }
+
+        .activity-meta i {
+            margin-right: 0.3rem;
+            color: var(--saylani-green);
+        }
+
+        .activity-status {
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+        }
+
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-inprogress { background: #dbeafe; color: #1e40af; }
+        .status-resolved { background: #d1fae5; color: #065f46; }
+        .status-active { background: #d1fae5; color: #065f46; }
+
+        /* Status Summary */
+        .status-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            color: var(--gray-700);
+        }
+
+        .status-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .dot-pending { background: var(--pending); }
+        .dot-progress { background: var(--in-progress); }
+        .dot-resolved { background: var(--resolved); }
+        .dot-rejected { background: var(--rejected); }
+
+        .status-count {
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: var(--gray-900);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+            margin-top: 1.8rem;
+        }
+
+        .action-btn {
+            padding: 1.2rem;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background: var(--saylani-green);
+            color: white;
+            border-color: var(--saylani-green);
+            transform: translateY(-2px);
+        }
+
+        .action-btn i {
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Legend */
+        .legend-section {
+            background: white;
+            border-radius: 20px;
+            padding: 1.8rem;
+            border: 1px solid var(--gray-200);
+            margin-top: 1.5rem;
+        }
+
+        .legend-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            color: var(--gray-800);
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+        }
+
+        .color-green { background: var(--saylani-green); }
+        .color-blue { background: var(--saylani-blue); }
+        .color-pending { background: var(--pending); }
+        .color-progress { background: var(--in-progress); }
+        .color-resolved { background: var(--resolved); }
+        .color-completed { background: var(--completed); }
+
+        .legend-text {
+            font-size: 1rem;
+            color: var(--gray-600);
+        }
+
+        .legend-text strong {
+            color: var(--gray-800);
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .activity-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <div class="logo-text">Saylani <span>Dashboard</span></div>
+            </div>
+            
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="lost.html" class="nav-link">Lost & Found</a>
+                <a href="submit complain.html" class="nav-link">Complaints</a>
+                <a href="volunteer.html" class="nav-link">Volunteer</a>
+                <a href="notification.html" class="nav-link">
+                    Notifications
+                    <span class="notification-badge" id="navBadge">0</span>
+                </a>
+            </div>
+            
+            <div class="user-menu">
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span id="userEmail">Loading...</span>
+                <button class="logout-btn" id="logoutBtn" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1>Welcome back, <span id="userName">User</span>! 👋</h1>
+            <p>Here's what's happening across your campus</p>
+            <div class="date-badge" id="currentDate"></div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <span class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +12%
+                    </span>
+                </div>
+                <div class="stat-value" id="totalLost">0</div>
+                <div class="stat-label">Lost & Found Items</div>
+                <div class="stat-trend">
+                    <span class="trend-up" id="pendingLost">0 pending</span> • 
+                    <span class="trend-down" id="foundLost">0 found</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <span class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +8%
+                    </span>
+                </div>
+                <div class="stat-value" id="totalComplaints">0</div>
+                <div class="stat-label">Total Complaints</div>
+                <div class="stat-trend">
+                    <span class="trend-up" id="pendingComplaints">0 pending</span> • 
+                    <span class="trend-down" id="resolvedComplaints">0 resolved</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon green">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <span class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +24%
+                    </span>
+                </div>
+                <div class="stat-value" id="totalVolunteers">0</div>
+                <div class="stat-label">Volunteer Registrations</div>
+                <div class="stat-trend">
+                    <span class="trend-up" id="upcomingEvents">3 upcoming events</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <span class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +6
+                    </span>
+                </div>
+                <div class="stat-value" id="totalNotifications">0</div>
+                <div class="stat-label">Unread Notifications</div>
+                <div class="stat-trend">
+                    <span class="trend-up" id="newMatches">0 new matches</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Grid -->
+        <div class="activity-grid">
+            <!-- Recent Activity -->
+            <div class="recent-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="activity-list" id="recentActivity">
+                    <!-- Activities will be loaded here -->
+                    <div class="activity-item">
+                        <div class="activity-icon lost">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Lost Laptop Reported</div>
+                            <div class="activity-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> Library</span>
+                                <span><i class="far fa-clock"></i> 2 hours ago</span>
+                            </div>
+                        </div>
+                        <span class="activity-status status-pending">Pending</span>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon complaint">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Electricity Issue - Room 201</div>
+                            <div class="activity-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> Academic Block</span>
+                                <span><i class="far fa-clock"></i> 5 hours ago</span>
+                            </div>
+                        </div>
+                        <span class="activity-status status-inprogress">In Progress</span>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon volunteer">
+                            <i class="fas fa-hand-holding-heart"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Volunteer for Tech Workshop</div>
+                            <div class="activity-meta">
+                                <span><i class="fas fa-calendar"></i> June 5</span>
+                                <span><i class="far fa-clock"></i> 1 day ago</span>
+                            </div>
+                        </div>
+                        <span class="activity-status status-active">Confirmed</span>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon notification">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Item Match Found: Laptop</div>
+                            <div class="activity-meta">
+                                <span><i class="fas fa-search"></i> Lost & Found</span>
+                                <span><i class="far fa-clock"></i> 1 day ago</span>
+                            </div>
+                        </div>
+                        <span class="activity-status status-resolved">Match Found</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Summary & Quick Actions -->
+            <div>
+                <div class="recent-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-tasks"></i> Status Summary</h3>
+                    </div>
+                    
+                    <div class="status-summary" id="statusSummary">
+                        <div class="status-item">
+                            <div class="status-label">
+                                <span class="status-dot dot-pending"></span>
+                                Pending Items
+                            </div>
+                            <span class="status-count" id="pendingCount">0</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-label">
+                                <span class="status-dot dot-progress"></span>
+                                In Progress
+                            </div>
+                            <span class="status-count" id="progressCount">0</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-label">
+                                <span class="status-dot dot-resolved"></span>
+                                Resolved/Found
+                            </div>
+                            <span class="status-count" id="resolvedCount">0</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-label">
+                                <span class="status-dot" style="background: var(--saylani-green);"></span>
+                                Active Volunteers
+                            </div>
+                            <span class="status-count" id="activeVolunteers">0</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-label">
+                                <span class="status-dot" style="background: var(--saylani-blue);"></span>
+                                Upcoming Events
+                            </div>
+                            <span class="status-count" id="upcomingEventsCount">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <a href="lost.html" class="action-btn">
+                            <i class="fas fa-search"></i>
+                            Report Lost Item
+                        </a>
+                        <a href="submit complain.html" class="action-btn">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            File Complaint
+                        </a>
+                        <a href="volunteer.html" class="action-btn">
+                            <i class="fas fa-hand-holding-heart"></i>
+                            Volunteer
+                        </a>
+                        <a href="notification.html" class="action-btn">
+                            <i class="fas fa-bell"></i>
+                            View Notifications
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend Section -->
+        <div class="legend-section">
+            <div class="legend-title">📋 Status Legend</div>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <div class="legend-color color-green"></div>
+                    <div class="legend-text"><strong>Green:</strong> Email is from / Active</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color color-blue"></div>
+                    <div class="legend-text"><strong>Blue:</strong> Completed / In Progress</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color color-pending"></div>
+                    <div class="legend-text"><strong>Orange:</strong> Pending / Notified</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ef4444;"></div>
+                    <div class="legend-text"><strong>Red:</strong> Receive / Rejected</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color color-resolved"></div>
+                    <div class="legend-text"><strong>Green:</strong> Resolved / Found</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color color-completed"></div>
+                    <div class="legend-text"><strong>Purple:</strong> Completed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import supabase from config
+        import { supabase, checkUser } from './config.js';
+
+        // DOM Elements
+        const userEmailEl = document.getElementById('userEmail');
+        const userNameEl = document.getElementById('userName');
+        const userAvatarEl = document.getElementById('userAvatar');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        let currentUser = null;
+
+        // Set current date
+        function setCurrentDate() {
+            const dateEl = document.getElementById('currentDate');
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateEl.textContent = new Date().toLocaleDateString('en-US', options);
+        }
+
+        // Check authentication
+        async function init() {
+            try {
+                const user = await checkUser();
+                
+                if (!user) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                currentUser = user;
+                const email = user.email;
+                const firstName = email.split('@')[0];
+                const initial = firstName.charAt(0).toUpperCase();
+                
+                if (userEmailEl) userEmailEl.textContent = firstName;
+                if (userNameEl) userNameEl.textContent = firstName;
+                if (userAvatarEl) {
+                    userAvatarEl.innerHTML = `<span style="color: white; font-weight: 600;">${initial}</span>`;
+                }
+                
+                setCurrentDate();
+                
+                // Load all dashboard data
+                await Promise.all([
+                    loadLostItems(),
+                    loadComplaints(),
+                    loadVolunteers(),
+                    loadNotifications()
+                ]);
+                
+                // Setup real-time listeners
+                setupRealtimeListeners();
+                
+            } catch (error) {
+                console.error('Init error:', error);
+            }
+        }
+
+        // Load lost items
+        async function loadLostItems() {
+            try {
+                const { data, error } = await supabase
+                    .from('lost_found_items')
+                    .select('*')
+                    .eq('user_email', currentUser.email);
+                
+                if (error) throw error;
+                
+                const total = data?.length || 0;
+                const pending = data?.filter(i => i.status === 'Pending').length || 0;
+                const found = data?.filter(i => i.status === 'Found').length || 0;
+                
+                document.getElementById('totalLost').textContent = total;
+                document.getElementById('pendingLost').textContent = pending + ' pending';
+                document.getElementById('foundLost').textContent = found + ' found';
+                
+                // Update status summary
+                document.getElementById('pendingCount').textContent = 
+                    (parseInt(document.getElementById('pendingCount').textContent) || 0) + pending;
+                document.getElementById('resolvedCount').textContent = 
+                    (parseInt(document.getElementById('resolvedCount').textContent) || 0) + found;
+                
+                // Add to recent activity
+                if (data && data.length > 0) {
+                    addToRecentActivity(data.slice(0, 2), 'lost');
+                }
+                
+            } catch (error) {
+                console.error('Error loading lost items:', error);
+            }
+        }
+
+        // Load complaints
+        async function loadComplaints() {
+            try {
+                const { data, error } = await supabase
+                    .from('complaints')
+                    .select('*')
+                    .eq('user_email', currentUser.email);
+                
+                if (error) throw error;
+                
+                const total = data?.length || 0;
+                const pending = data?.filter(i => i.status === 'Submitted').length || 0;
+                const progress = data?.filter(i => i.status === 'In Progress').length || 0;
+                const resolved = data?.filter(i => i.status === 'Resolved').length || 0;
+                
+                document.getElementById('totalComplaints').textContent = total;
+                document.getElementById('pendingComplaints').textContent = pending + ' pending';
+                document.getElementById('resolvedComplaints').textContent = resolved + ' resolved';
+                
+                // Update status summary
+                document.getElementById('pendingCount').textContent = 
+                    (parseInt(document.getElementById('pendingCount').textContent) || 0) + pending;
+                document.getElementById('progressCount').textContent = 
+                    (parseInt(document.getElementById('progressCount').textContent) || 0) + progress;
+                document.getElementById('resolvedCount').textContent = 
+                    (parseInt(document.getElementById('resolvedCount').textContent) || 0) + resolved;
+                
+                // Add to recent activity
+                if (data && data.length > 0) {
+                    addToRecentActivity(data.slice(0, 2), 'complaint');
+                }
+                
+            } catch (error) {
+                console.error('Error loading complaints:', error);
+            }
+        }
+
+        // Load volunteers
+        async function loadVolunteers() {
+            try {
+                const { data, error } = await supabase
+                    .from('volunteers')
+                    .select('*')
+                    .eq('user_email', currentUser.email);
+                
+                if (error) throw error;
+                
+                const total = data?.length || 0;
+                const active = data?.filter(i => i.status === 'Active').length || 0;
+                
+                document.getElementById('totalVolunteers').textContent = total;
+                document.getElementById('activeVolunteers').textContent = active;
+                
+                // Count unique events
+                const events = new Set(data?.map(v => v.event));
+                document.getElementById('upcomingEvents').textContent = events.size + ' upcoming events';
+                document.getElementById('upcomingEventsCount').textContent = events.size;
+                
+                // Add to recent activity
+                if (data && data.length > 0) {
+                    addToRecentActivity(data.slice(0, 2), 'volunteer');
+                }
+                
+            } catch (error) {
+                console.error('Error loading volunteers:', error);
+            }
+        }
+
+        // Load notifications
+        async function loadNotifications() {
+            try {
+                const { data, error } = await supabase
+                    .from('notifications')
+                    .select('*')
+                    .eq('user_email', currentUser.email)
+                    .eq('read', false);
+                
+                if (error) throw error;
+                
+                const count = data?.length || 0;
+                const matches = data?.filter(n => n.type === 'match').length || 0;
+                
+                document.getElementById('totalNotifications').textContent = count;
+                document.getElementById('newMatches').textContent = matches + ' new matches';
+                
+                const badge = document.getElementById('navBadge');
+                if (badge) {
+                    badge.textContent = count > 9 ? '9+' : count;
+                    badge.style.display = count > 0 ? 'block' : 'none';
+                }
+                
+                // Add to recent activity
+                if (data && data.length > 0) {
+                    addToRecentActivity(data.slice(0, 2), 'notification');
+                }
+                
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+            }
+        }
+
+        // Add to recent activity
+        function addToRecentActivity(items, type) {
+            const activityList = document.getElementById('recentActivity');
+            if (!activityList) return;
+            
+            items.forEach(item => {
+                // Check if item already exists in list
+                const existing = Array.from(activityList.children).find(
+                    child => child.querySelector('.activity-title')?.textContent.includes(item.title || item.event)
+                );
+                
+                if (existing) return;
+                
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                
+                const icon = type === 'lost' ? 'fa-search' : 
+                            type === 'complaint' ? 'fa-exclamation-triangle' :
+                            type === 'volunteer' ? 'fa-hand-holding-heart' : 'fa-bell';
+                
+                const iconClass = type === 'lost' ? 'lost' :
+                                 type === 'complaint' ? 'complaint' :
+                                 type === 'volunteer' ? 'volunteer' : 'notification';
+                
+                const title = type === 'lost' ? item.title :
+                             type === 'complaint' ? item.title :
+                             type === 'volunteer' ? `Volunteer for ${item.event}` :
+                             item.title;
+                
+                const status = type === 'lost' ? item.status || 'Pending' :
+                              type === 'complaint' ? item.status || 'Submitted' :
+                              type === 'volunteer' ? item.status || 'Active' :
+                              'New';
+                
+                const statusClass = status.toLowerCase().replace(' ', '-');
+                
+                const time = formatTimeAgo(item.created_at);
+                const location = item.location ? `<span><i class="fas fa-map-marker-alt"></i> ${item.location}</span>` : '';
+                
+                activityItem.innerHTML = `
+                    <div class="activity-icon ${iconClass}">
+                        <i class="fas ${icon}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">${title}</div>
+                        <div class="activity-meta">
+                            ${location}
+                            <span><i class="far fa-clock"></i> ${time}</span>
+                        </div>
+                    </div>
+                    <span class="activity-status status-${statusClass}">${status}</span>
+                `;
+                
+                activityList.insertBefore(activityItem, activityList.firstChild);
+                
+                // Keep only last 5 items
+                while (activityList.children.length > 5) {
+                    activityList.removeChild(activityList.lastChild);
+                }
+            });
+        }
+
+        // Format time ago
+        function formatTimeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} min ago`;
+            if (diffHours < 24) return `${diffHours} hour ago`;
+            if (diffDays < 7) return `${diffDays} day ago`;
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        // Setup real-time listeners
+        function setupRealtimeListeners() {
+            supabase
+                .channel('dashboard-changes')
+                .on('postgres_changes', 
+                    { event: '*', schema: 'public', table: 'lost_found_items' }, 
+                    () => {
+                        loadLostItems();
+                    }
+                )
+                .on('postgres_changes', 
+                    { event: '*', schema: 'public', table: 'complaints' }, 
+                    () => {
+                        loadComplaints();
+                    }
+                )
+                .on('postgres_changes', 
+                    { event: '*', schema: 'public', table: 'volunteers' }, 
+                    () => {
+                        loadVolunteers();
+                    }
+                )
+                .on('postgres_changes', 
+                    { event: '*', schema: 'public', table: 'notifications' }, 
+                    () => {
+                        loadNotifications();
+                    }
+                )
+                .subscribe();
+        }
+
+        // Logout
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                window.location.href = 'index.html';
+            });
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

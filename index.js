@@ -77,7 +77,7 @@ loginForm.addEventListener("submit", async (e) => {
       
       // Wait 1 second then redirect to home page
       setTimeout(() => {
-        window.location.href = 'home.html';
+        window.location.href = 'dashboard.html';
       }, 1000);
     }
   } catch (error) {
